@@ -14,67 +14,16 @@ screen_address = 0x6000
 drawmode = 0
 render_type = 1
 
-level_width = 12
-level_height = 12
+level_width = 9
+level_height = 9
 
+level1_map = {}
 
-level1_map = {
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,9,0,0,1},
-  {1,6,6,6,6,6,6,6,6,0,0,0,0,0,0,0,1,0,0,0,9,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,1,0,0,0,9,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,1,0,0,0,9,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,1,0,0,0,9,0,0,1},
-  {1,0,3,3,3,3,3,0,0,0,0,0,4,0,0,0,0,0,0,0,9,0,0,1},
-  {1,0,0,0,3,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,9,0,0,1},
-  {1,0,0,0,3,3,3,3,3,3,3,0,4,0,0,0,0,0,0,0,9,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,0,0,0,0,0,8,8,8,8,8,8,0,0,1},
-  {1,0,0,0,0,0,2,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,7,0,2,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,7,0,0,2,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,7,0,7,0,0,7,7,7,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,7,0,0,5,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,7,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,7,7,7,7,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-}
-
-level1a_map = {
-  {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7},
-  {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
-  {4,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
-  {4,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
-  {4,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
-  {4,0,4,0,0,0,0,5,5,5,5,5,5,5,5,5,7,7,0,7,7,7,7,7},
-  {4,0,5,0,0,0,0,5,0,5,0,5,0,5,0,5,7,0,0,0,7,7,7,1},
-  {4,0,6,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
-  {4,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,1},
-  {4,0,8,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
-  {4,0,0,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,7,7,7,1},
-  {4,0,0,0,0,0,0,5,5,5,5,0,5,5,5,5,7,7,7,7,7,7,7,1},
-  {6,6,6,6,6,6,6,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
-  {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
-  {6,6,6,6,6,6,0,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
-  {4,4,4,4,4,4,0,4,4,4,6,0,6,2,2,2,2,2,2,2,3,3,3,3},
-  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
-  {4,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,5,0,0,2,0,0,0,2},
-  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
-  {4,0,6,0,6,0,0,0,0,4,6,0,0,0,0,0,5,0,0,0,0,0,0,2},
-  {4,0,0,5,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
-  {4,0,6,0,6,0,0,0,0,4,6,0,6,2,0,0,5,0,0,2,0,0,0,2},
-  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
-  {4,4,4,4,4,4,4,4,4,4,1,1,1,2,2,2,2,2,2,3,3,3,3,3}
-}
+wall_colors = { 7,9,13,14,15 }
 
 palette = {
     {0,1, 2, 3, 4, 5, 6, 7,8,9,10,11,12,13,14,15},
-    {8,9,10,11,12,13,14,15,0,1, 2, 3, 4, 5, 6, 7},
+    {0,1, 2, 3, 4, 5, 5, 5,3,4, 9, 3,13, 1, 3, 4}
 }
 
 N=1
@@ -145,6 +94,8 @@ function generate_level()
             if i == 1 or j == 1 or i == map_height or j == map_width then
                 color = 1
             end
+            -- random color but never 0
+            color = rnd(wall_colors)
             level1_map[i][j] = color
         end
     end
@@ -177,7 +128,21 @@ function generate_level()
         map_y += 2
     end
 
+    -- put the syringe
+    found = false
+    while not found do
+        y = flr(rnd(level_height-2))+2
+        x = flr(rnd(level_width-2))+2
+        if level1_map[y+1][x+1] != 0 then
+            found = true
+            level1_map[y+1][x+1] = 66
+,4        end
+    end 
+
+
 end
+
+-- TODO make level map 0 indexed
 
 function init_player()
     player={}
@@ -187,17 +152,17 @@ function init_player()
     player.direction_x = 0
     player.direction_y = 0
 
--- player.vel_y = 0.0
--- player.vel_x = 0.0
--- player.acc_y = 0.0
--- player.acc_x = 0.0
--- player.jumping = false
--- player.radi = 3
--- player.energy = max_energy
--- player.energy_color = 9
--- player.dead = false
--- player.score = 0
--- player.score_color = 9
+    found = false
+    while not found do
+        y = flr(rnd(level_height))+1
+        x = flr(rnd(level_width))+1
+        if level1_map[y+1][x+1] == 0 then
+            found = true
+            player.x = x+0.5
+            player.y = y+0.5
+        end
+    end 
+
 end
 
 function init_camera()
@@ -230,12 +195,12 @@ function init_sphere()
 end
 
 function game_init()
+    -- do this first
+    generate_level()
+
     init_camera()
     init_player()
     init_sphere()
-
-    generate_level()
-    drawmode = 1
 end
 
 function game_update()
@@ -256,11 +221,11 @@ function game_update()
 
   speed = 0
   if btn(2) then
-    speed += 0.1
+    speed += 0.09
   end
 
   if btn(3) then
-    speed -= 0.1
+    speed -= 0.09
   end
 
   current_level_map = level1_map
@@ -275,6 +240,9 @@ function game_update()
     player.y = new_y
   else
   -- blocked by wall
+    if current_level_map[map_y+1][map_x+1] == 66 then
+        -- found the syringe!! new level
+    end
 
   end
 
@@ -334,12 +302,15 @@ function game_draw_test()
 end
 
 function game_draw()
-    cls(0)
 
+    if drawmode == 1 then
+        cls(0)
+    end
 
     if drawmode == 0 then
+        cls(0)
 --        rectfill(0,0,screen_width,screen_height/2,0)
-        rectfill(0,screen_height/2,screen_width,screen_height,13)
+        rectfill(0,screen_height/2,screen_width,screen_height,6)
 
         for point in all(sphere.rotated_points) do
             if point.z > 0 then
@@ -370,7 +341,9 @@ function game_draw()
         for row in all(current_level_map) do
             x = 0
             for cell in all(row) do
-                if cell > 0 then
+                if cell == 66 then
+                    circfill(x+4,y+4,4,15)
+                elseif cell > 0 then
                     rectfill(x,y,x+tile_width-1,y+tile_height-1,cell)
                 end
                 x += tile_width
@@ -487,7 +460,7 @@ function game_draw()
             end
 
             color = current_level_map[1+map_y][1+map_x]
-            if color == 5 then
+            if color == 66 then
             -- texture map
                 texture = color
                 if side == 0 then
