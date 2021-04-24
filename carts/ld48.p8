@@ -14,6 +14,10 @@ screen_address = 0x6000
 drawmode = 0
 render_type = 1
 
+level_width = 12
+level_height = 12
+
+
 level1_map = {
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -73,11 +77,112 @@ palette = {
     {8,9,10,11,12,13,14,15,0,1, 2, 3, 4, 5, 6, 7},
 }
 
+N=1
+S=2
+E=4
+W=8
+DX         = { [E] = 1, [W] = -1, [N] =  0, [S] = 0 }
+DY         = { [E] = 0, [W] =  0, [N] = -1, [S] = 1 }
+OPPOSITE   = { [E] = W, [W] =  E, [N] =  S, [S] = N }
+
+function carve_passages_from(current_x,current_y,grid) 
+-- TODO randomize
+    height = #grid
+    width = #grid[0]
+
+    directions = {N, S, W, E}
+    -- shuffle
+    for i=#directions,1,-1 do
+        rnd_card=ceil(rnd(i))
+        directions[i],directions[rnd_card]=directions[rnd_card],directions[i]
+    end
+    for direction in all(directions) do
+        new_x = current_x + DX[direction]
+        new_y = current_y + DY[direction]
+        if new_y >= 0 and new_y <= height and new_x >= 0 and new_x <= width and grid[new_y][new_x] == 0 then
+        -- valid
+            grid[current_y][current_x] |= direction
+            grid[new_y][new_x] |= OPPOSITE[direction]
+            -- recurse
+            carve_passages_from(new_x,new_y,grid)
+        end
+    end
+end
+
+function generate_maze()
+    height = flr((level_height)/2)
+    width = flr((level_width)/2)
+
+    -- init maze
+    maze = {}
+    for y=0,height-1 do
+        maze[y] = {}
+        for x=0,width-1 do
+            maze[y][x] = 0
+        end
+    end
+
+    carve_passages_from(0,0,maze)
+end
+
+function generate_level()
+    generate_maze()
+
+    -- clear map
+    map_height = level_height
+    if map_height % 2 == 0 then
+        map_height += 1
+    end
+    map_width = level_width+1
+    if map_width % 2 == 0 then
+        map_width += 1
+    end
+    level1_map = {}
+    for i=1,map_height do
+        level1_map[i] = {}
+        for j=1,map_width do
+            color = 3
+            if i == 1 or j == 1 or i == map_height or j == map_width then
+                color = 1
+            end
+            level1_map[i][j] = color
+        end
+    end
+
+    -- convert maze to map
+    map_y = 2
+    maze_y = 0
+    maze_x = 0
+
+    for maze_y=0,#maze do
+        map_x = 2
+        for maze_x=0,#maze[0] do
+            cell = maze[maze_y][maze_x]
+            level1_map[map_y][map_x] = 0
+            if cell & N == N then
+                level1_map[map_y-1][map_x] = 0
+            end
+            if cell & S == S then
+                level1_map[map_y+1][map_x] = 0
+            end
+            if cell & W == W then
+                level1_map[map_y][map_x-1] = 0
+            end
+            if cell & E == E then
+                level1_map[map_y][map_x+1] = 0
+            end
+
+            map_x += 2
+        end
+        map_y += 2
+    end
+
+end
 
 function init_player()
     player={}
-    player.x = 3
-    player.y = 3
+    player.x = 1.5
+    player.y = 1.5
     player.angle = 0
     player.direction_x = 0
     player.direction_y = 0
@@ -120,16 +225,17 @@ function init_sphere()
 
      if point.y <= 0 then
         add(sphere.points,point)
+     end
     end
-
-    end
-
 end
 
 function game_init()
     init_camera()
     init_player()
     init_sphere()
+
+    generate_level()
+    drawmode = 1
 end
 
 function game_update()
@@ -210,6 +316,23 @@ function game_update()
 
 end
 
+
+
+function game_draw_test()
+    cls(0)
+
+    y = 0
+    for row in all(maze) do
+        x = 0
+        for cell in all(row) do
+            print(cell,x,y,15)
+            x += 8
+        end
+        y += 8
+    end
+
+end
+
 function game_draw()
     cls(0)
 
@@ -268,9 +391,9 @@ function game_draw()
         x_dir = ray_direction_x*25
         y_dir = ray_direction_y*25
 
-        if drawmode == 1 then
-            line(player.x*tile_width,player.y*tile_height,player.x*tile_width+x_dir,player.y*tile_height+y_dir,7)
-        end
+--        if drawmode == 1 then
+--            line(player.x*tile_width,player.y*tile_height,player.x*tile_width+x_dir,player.y*tile_height+y_dir,7)
+--        end
 
         map_x = flr(player.x)
         map_y = flr(player.y)
