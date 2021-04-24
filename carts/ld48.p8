@@ -80,6 +80,25 @@ function game_update()
   camera.plane_x = cos(player.angle+1.0/4)*0.66
   camera.plane_y = sin(player.angle+1.0/4)*0.66
 
+  if btn(2) then
+
+    current_level_map = level1_map
+
+    speed = 0.1
+    new_x = player.x + player.direction_x * speed
+    new_y = player.y + player.direction_y * speed
+    map_x = flr(new_x)
+    map_y = flr(new_y)
+    if current_level_map[map_y+1][map_x+1] == 0 then
+    -- allow it
+        player.x = new_x
+        player.y = new_y
+    else
+    -- blocked by wall
+
+    end
+  end
+
 end
 
 function game_draw()
