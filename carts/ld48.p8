@@ -5,39 +5,79 @@ __lua__
 screen_width = 128
 screen_height = 128
 
+texture_width = 32
+texture_height = 32
+
+spritesheet_address = 0x0
+screen_address = 0x6000
+
 drawmode = 0
+render_type = 1
 
 level1_map = {
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,9,0,0,1},
+  {1,6,6,6,6,6,6,6,6,0,0,0,0,0,0,0,1,0,0,0,9,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,1,0,0,0,9,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,1,0,0,0,9,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,1,0,0,0,9,0,0,1},
+  {1,0,3,3,3,3,3,0,0,0,0,0,4,0,0,0,0,0,0,0,9,0,0,1},
+  {1,0,0,0,3,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,9,0,0,1},
+  {1,0,0,0,3,3,3,3,3,3,3,0,4,0,0,0,0,0,0,0,9,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,0,0,0,0,0,8,8,8,8,8,8,0,0,1},
+  {1,0,0,0,0,0,2,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,7,0,2,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,7,0,0,2,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,7,0,7,0,0,7,7,7,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,7,0,0,5,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,7,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,7,7,7,7,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 }
 
+level1a_map = {
+  {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7},
+  {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
+  {4,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
+  {4,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
+  {4,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
+  {4,0,4,0,0,0,0,5,5,5,5,5,5,5,5,5,7,7,0,7,7,7,7,7},
+  {4,0,5,0,0,0,0,5,0,5,0,5,0,5,0,5,7,0,0,0,7,7,7,1},
+  {4,0,6,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
+  {4,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,1},
+  {4,0,8,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
+  {4,0,0,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,7,7,7,1},
+  {4,0,0,0,0,0,0,5,5,5,5,0,5,5,5,5,7,7,7,7,7,7,7,1},
+  {6,6,6,6,6,6,6,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
+  {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+  {6,6,6,6,6,6,0,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
+  {4,4,4,4,4,4,0,4,4,4,6,0,6,2,2,2,2,2,2,2,3,3,3,3},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,5,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+  {4,0,6,0,6,0,0,0,0,4,6,0,0,0,0,0,5,0,0,0,0,0,0,2},
+  {4,0,0,5,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+  {4,0,6,0,6,0,0,0,0,4,6,0,6,2,0,0,5,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
+  {4,4,4,4,4,4,4,4,4,4,1,1,1,2,2,2,2,2,2,3,3,3,3,3}
+}
+
+palette = {
+    {0,1, 2, 3, 4, 5, 6, 7,8,9,10,11,12,13,14,15},
+    {8,9,10,11,12,13,14,15,0,1, 2, 3, 4, 5, 6, 7},
+}
+
+
 function init_player()
     player={}
-    player.x = 12
-    player.y = 12
+    player.x = 3
+    player.y = 3
     player.angle = 0
     player.direction_x = 0
     player.direction_y = 0
@@ -61,17 +101,43 @@ function init_camera()
     camera.plane_y = 0.66
 end
 
+
+function init_sphere()
+
+    sphere = {}
+    sphere.points = {}
+    sphere.rotated_points = {}
+
+    while #sphere.points < 100 do
+     angle_a = rnd()
+     angle_b = rnd()
+     length = 75
+
+     point = {}
+     point.x = length * sin(angle_a) * cos(angle_b)
+     point.y = length * sin(angle_a) * sin(angle_b)
+     point.z = length * cos(angle_a)
+
+     if point.y <= 0 then
+        add(sphere.points,point)
+    end
+
+    end
+
+end
+
 function game_init()
     init_camera()
     init_player()
+    init_sphere()
 end
 
 function game_update()
   -- btn 0,1 left and right
   if btn(0) then
-    player.angle += 0.01
-  elseif btn(1) then
     player.angle -= 0.01
+  elseif btn(1) then
+    player.angle += 0.01
   end
 
 -- calculate player direction
@@ -88,7 +154,7 @@ function game_update()
   end
 
   if btn(3) then
-    speed -= 0.2
+    speed -= 0.1
   end
 
   current_level_map = level1_map
@@ -106,12 +172,40 @@ function game_update()
 
   end
 
+  if btnp(4) then
+    if render_type == 0 then
+        render_type = 1
+    else
+        render_type = 0
+    end
+  end
+ 
+
   if btnp(5) then
     if drawmode == 0 then
         drawmode = 1
     else
         drawmode = 0
     end
+  end
+
+  angle = -player.angle / 2
+  sphere.rotated_points = {}
+  for point in all(sphere.points) do
+
+    x = point.x
+    y = point.y
+    z = point.z
+
+    point = {}
+    point.x = x * cos(angle) + z * sin(angle)
+    point.y = y 
+    point.z = -x * sin(angle) + z * cos(angle)
+
+    point.x = point.x * 128 / (point.z + 128)
+    point.y = point.y * 128 / (point.z + 128)
+
+    add(sphere.rotated_points, point)
   end
 
 end
@@ -121,8 +215,23 @@ function game_draw()
 
 
     if drawmode == 0 then
-        rectfill(0,0,screen_width,screen_height/2,14)
+--        rectfill(0,0,screen_width,screen_height/2,0)
         rectfill(0,screen_height/2,screen_width,screen_height,13)
+
+        for point in all(sphere.rotated_points) do
+            if point.z > 0 then
+                y = point.y + screen_height/2
+            -- if y < screen_height/2 then
+                    x = point.x + screen_width/2
+                    flash = rnd()
+                    if flash > 0.01 then
+                        pset(x,y,15)
+                    else
+                        pset(x,y,1)
+                    end
+            -- end
+            end
+        end
     end
 
     current_level_map = level1_map
@@ -147,10 +256,11 @@ function game_draw()
             y += tile_height
         end
 
-        print('*',player.x*tile_width,player.y*tile_height,7)
+        spr(0,player.x*tile_width-4,player.y*tile_height-4,7)
     end
 
-    for x=0,screen_width do
+    current_screen_address = screen_address
+    for x=0,screen_width-1 do
         camera_x = 2*x / screen_width - 1
         ray_direction_x = player.direction_x + camera.plane_x * camera_x
         ray_direction_y = player.direction_y + camera.plane_y * camera_x
@@ -230,6 +340,7 @@ function game_draw()
         end
 
         if drawmode == 0 then
+
         -- calculate height of stripe
             if side == 0 then
                 perpendicular_wall_distance = (map_x - player.x + (1 - step_x) / 2) / ray_direction_x
@@ -237,22 +348,122 @@ function game_draw()
                 perpendicular_wall_distance = (map_y - player.y + (1 - step_y) / 2) / ray_direction_y
             end
 
+    -- select palette based on distance and side
+            palette_index = 1 + side
+            current_palette = palette[palette_index]
+
+
             line_height = screen_height / perpendicular_wall_distance
-            start_y = -line_height/2 + screen_height/2
+            start_y = flr(-line_height/2 + screen_height/2)
             if start_y < 0 then
                 start_y = 0
             end
-            stop_y = line_height/2 + screen_height/2
-            if stop_y > screen_height then
-                stop_y = screen_height
+            stop_y = flr(line_height/2 + screen_height/2)
+            if stop_y >= screen_height then
+                stop_y = screen_height-1
             end
 
             color = current_level_map[1+map_y][1+map_x]
-            if side == 1 then
-                color += 5
+            if color == 5 then
+            -- texture map
+                texture = color
+                if side == 0 then
+                    wall_pos = player.y + perpendicular_wall_distance * ray_direction_y
+                else
+                    wall_pos = player.x + perpendicular_wall_distance * ray_direction_x
+                end
+                wall_pos -= flr(wall_pos)
+                texture_x = wall_pos * texture_width
+                if side == 0 and ray_direction_x > 0 then
+                    texture_x = texture_width - texture_x - 1
+                end
+                if side == 1 and ray_direction_y < 0 then
+                    texture_x = texture_width - texture_x - 1
+                end
+
+                -- select texture
+                texture_x += 8
+
+                texture_step = 1.0 * texture_height / line_height
+                texture_pos = (start_y - screen_height/2 + line_height/2) * texture_step
+
+                if render_type == 0 then
+                    for y = start_y, stop_y do
+                        texture_y = flr(texture_pos) & (texture_height-1)
+                        texture_pos += texture_step
+                        color = sget(texture_x,texture_y)
+                        pset(x,y,color)
+                    end
+                else
+                    if (flr(texture_x) % 2 == 0) and (x % 2 == 0) then
+                    -- both are even
+                        texture_address = spritesheet_address + flr(texture_x / 2)
+                        stripe_address = current_screen_address + start_y*64
+                        for y = start_y, stop_y do
+                            texture_y = flr(texture_pos) & (texture_height-1)
+                            texture_pos += texture_step
+                            color = peek(texture_address+texture_y*64) & 0xf
+                            tmp = peek(stripe_address) & 0xf0
+                            tmp |= color
+                            poke(stripe_address,tmp)
+                            stripe_address+=64
+                        end
+
+                    elseif (flr(texture_x) % 2 == 1) and (x % 2 == 1) then
+                    -- both are odd
+                        texture_address = spritesheet_address + flr(texture_x / 2)
+                        stripe_address = current_screen_address + start_y*64
+                        for y = start_y, stop_y do
+                            texture_y = flr(texture_pos) & (texture_height-1)
+                            texture_pos += texture_step
+                            color = peek(texture_address+texture_y*64) & 0xf0
+                            tmp = peek(stripe_address) & 0xf
+                            tmp |= color
+                            poke(stripe_address,tmp)
+                            stripe_address+=64
+                        end
+
+                    elseif (flr(texture_x) % 2 == 1) and (x % 2 == 0) then
+                    -- texture is odd, dst is even
+                        texture_address = spritesheet_address + flr(texture_x / 2)
+                        stripe_address = current_screen_address + start_y*64
+                        for y = start_y, stop_y do
+                            texture_y = flr(texture_pos) & (texture_height-1)
+                            texture_pos += texture_step
+                            color = peek(texture_address+texture_y*64) & 0xf0
+                            tmp = peek(stripe_address) & 0xf0
+                            tmp |= (color >> 4)
+                            poke(stripe_address,tmp)
+                            stripe_address+=64
+                        end
+
+                    elseif (flr(texture_x) % 2 == 0) and (x % 2 == 1) then
+                    -- texture is even, dst is odd
+                        texture_address = spritesheet_address + flr(texture_x / 2)
+                        stripe_address = current_screen_address + start_y*64
+                        for y = start_y, stop_y do
+                            texture_y = flr(texture_pos) & (texture_height-1)
+                            texture_pos += texture_step
+                            color = peek(texture_address+texture_y*64) & 0xf
+                            tmp = peek(stripe_address) & 0xf
+                            tmp |= (color << 4)
+                            poke(stripe_address,tmp)
+                            stripe_address+=64
+                        end
+                    else
+                        fillrect(0,0,128,128,15)
+                    end
+                end
+            else
+                -- translate color
+                color = current_palette[color+1]
+                line(x,start_y,x,stop_y,color)
             end
 
-            line(x,start_y,x,stop_y,color)
+            if x % 2 == 1 then
+            -- next byte in memory
+                current_screen_address += 1
+            end
         end
 
     end
@@ -280,10 +491,35 @@ function _draw()
 end
 
 __gfx__
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00700700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00077000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00077000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00700700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-
+00000000110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000161000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700700016100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00077000001610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00077000000161010001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700700000016161016100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000001666166610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000016661666161000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000001616661666100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000166616666610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000001666666666161000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000016666666661666100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000001ccccccc1ccccc10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000001ccccccccccc1c1000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000001ccccccccc1ccc101610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000001ccccccc1ccccc16661000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000001ccccccccccccc1610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000001ccccccccccc16100000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000001ccccccccc161000001610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000001ccccccc1610000016100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000001ccccc16161000161000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000001ccc161666101610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000001c1616666616100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000001616101666661000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000016661000166610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000001610000016100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000100000161000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000001610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000016100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000161000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000001610000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
