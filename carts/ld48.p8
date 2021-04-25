@@ -214,14 +214,14 @@ function init_player()
                 if y != level.height then
                     if level.map[y+1][x] == 0 then
                         found = true
-                        player.angle = 1/4
+                        player.angle = 3/4
                     end
                 end
 
                 if y != 1 then
                     if level.map[y-1][x] == 0 then
                         found = true
-                        player.angle = 3/4
+                        player.angle = 1/4
                     end
                 end
 
@@ -250,12 +250,6 @@ function init_player()
             break
         end
     end -- for y
-
-    printh("y="..player.y.."x="..player.x)
-
-
-    while not found do
-    end 
 
 end
 
@@ -330,7 +324,7 @@ function level_update()
     player.y = new_y
   else
   -- blocked by wall
-    if current_level_map[map_y][map_x] == 66 then
+    if current_level_map[map_y][map_x] == 66 and btn(2) then
         -- found the syringe!! new level
         current_state = state_end_level
     end
