@@ -150,52 +150,58 @@ function generate_level()
         end
         map_y += 2
     end
-
-    -- put the syringe
-    found = false
-    for y=level.height,1,-1 do
-        for x=level.width,1,-1 do
-            if level.map[y][x] != 0 then
-                -- check that it is visible from at least one direction
-                if y != level.height then
-                    if level.map[y+1][x] == 0 then
-                        found = true
-                    end
-                end
-
-                if y != 1 then
-                    if level.map[y-1][x] == 0 then
-                        found = true
-                    end
-                end
-
-                if x != level.width then
-                    if level.map[y][x+1] == 0 then
-                        found = true
-                    end
-                end
-
-                if x != 1 then
-                    if level.map[y][x-1] == 0 then
-                        found = true
-                    end
-                end
-
-                -- if at least one direction is free
-                if found then
-                    level.map[y][x] = 66
-                    break
-                end
-            end
-        end -- for x
-        if found then
-            break
-        end
-    end -- for y
-
 end
 
 -- TODO make level map 0 indexed
+
+function player_update()
+  -- btn 0,1 left and right
+  if btn(0) then
+    player.angle -= 0.01
+  elseif btn(1) then
+    player.angle += 0.01
+  end
+
+-- calculate player direction
+  player.direction_x = cos(player.angle)*1
+  player.direction_y = sin(player.angle)*1
+
+-- camera plane is perpendicular to player direction
+  camera.plane_x = cos(player.angle+1.0/4)*0.66
+  camera.plane_y = sin(player.angle+1.0/4)*0.66
+
+  speed = 0
+  if btn(2) then
+    speed += 0.09
+  end
+
+  if btn(3) then
+    speed -= 0.09
+  end
+
+  current_level_map = level.map
+
+  new_x = player.x + player.direction_x * speed
+  new_y = player.y + player.direction_y * speed
+  map_x = flr(new_x)
+  map_y = flr(new_y)
+  if current_level_map[map_y][map_x] == 0 then
+  -- allow it
+    player.x = new_x
+    player.y = new_y
+  else
+  -- blocked by wall
+    if current_level_map[map_y][map_x] == 66 and btn(2) then
+        -- found the syringe!! new level
+        current_state = state_end_level
+    end
+
+  end
+
+    player.animation_counter += player.animation_speed
+    idx = 1+flr(player.animation_counter) % #player.animation
+    player.current_animation_frame = player.animation[idx] 
+end
 
 function init_player()
     player={}
@@ -208,6 +214,7 @@ function init_player()
     player.animation_speed = 0.1
     player.animation_counter = 0
     player.current_animation_frame = 0
+    player.update = player_update
 
     -- put the player
     found = false
@@ -263,99 +270,7 @@ function init_camera()
     camera.plane_y = 0.66
 end
 
-
-function init_sphere()
-
-    sphere = {}
-    sphere.points = {}
-    sphere.rotated_points = {}
-
-    while #sphere.points < 100 do
-     angle_a = rnd()
-     angle_b = rnd()
-     length = 75
-
-     point = {}
-     point.x = length * sin(angle_a) * cos(angle_b)
-     point.y = length * sin(angle_a) * sin(angle_b)
-     point.z = length * cos(angle_a)
-
-     if point.y <= 0 then
-        add(sphere.points,point)
-     end
-    end
-end
-
-function game_init()
-    init_camera()
-    drawmode = 1
-end
-
-function level_update()
-  -- btn 0,1 left and right
-  if btn(0) then
-    player.angle -= 0.01
-  elseif btn(1) then
-    player.angle += 0.01
-  end
-
--- calculate player direction
-  player.direction_x = cos(player.angle)*1
-  player.direction_y = sin(player.angle)*1
-
--- camera plane is perpendicular to player direction
-  camera.plane_x = cos(player.angle+1.0/4)*0.66
-  camera.plane_y = sin(player.angle+1.0/4)*0.66
-
-  speed = 0
-  if btn(2) then
-    speed += 0.09
-  end
-
-  if btn(3) then
-    speed -= 0.09
-  end
-
-  current_level_map = level.map
-
-  new_x = player.x + player.direction_x * speed
-  new_y = player.y + player.direction_y * speed
-  map_x = flr(new_x)
-  map_y = flr(new_y)
-  if current_level_map[map_y][map_x] == 0 then
-  -- allow it
-    player.x = new_x
-    player.y = new_y
-  else
-  -- blocked by wall
-    if current_level_map[map_y][map_x] == 66 and btn(2) then
-        -- found the syringe!! new level
-        current_state = state_end_level
-    end
-
-  end
-
-  if btnp(4) then
---    if render_type == 0 then
---        render_type = 1
---    else
---        render_type = 0
---    end
-
-    -- cheat and go to next level
-    current_state = state_end_level
-
-  end
- 
-
-  if btnp(5) then
-    if drawmode == 0 then
-        drawmode = 1
-    else
-        drawmode = 0
-    end
-  end
-
+function update_sphere()
   angle = -player.angle / 2
   sphere.rotated_points = {}
   for point in all(sphere.points) do
@@ -374,11 +289,122 @@ function level_update()
 
     add(sphere.rotated_points, point)
   end
+end
 
-    player.animation_counter += player.animation_speed
-    idx = 1+flr(player.animation_counter) % #player.animation
-    player.current_animation_frame = player.animation[idx] 
-    
+function init_sphere()
+    sphere = {}
+    sphere.points = {}
+    sphere.rotated_points = {}
+    sphere.update = update_sphere
+
+    while #sphere.points < 100 do
+     angle_a = rnd()
+     angle_b = rnd()
+     length = 75
+
+     point = {}
+     point.x = length * sin(angle_a) * cos(angle_b)
+     point.y = length * sin(angle_a) * sin(angle_b)
+     point.z = length * cos(angle_a)
+
+     if point.y <= 0 then
+        add(sphere.points,point)
+     end
+    end
+end
+
+function init_syringe()
+
+    syringe = {}
+    syringe.animation = {80,80,80,80,80,80,80,80,80,81,82,83,84,85,85,85,85,85,85,85,85}
+    syringe.animation_speed = 0.2
+    syringe.animation_counter = 0
+    syringe.current_animation_frame = 0
+    syringe.update = syringe_update
+
+    -- put the syringe
+    found = false
+    for y=level.height,1,-1 do
+        for x=level.width,1,-1 do
+            if level.map[y][x] != 0 then
+                -- check that it is visible from at least one direction
+                if y != level.height then
+                    if level.map[y+1][x] == 0 then
+                        found = true
+                    end
+                end
+
+                if y != 1 then
+                    if level.map[y-1][x] == 0 then
+                        found = true
+                    end
+                end
+
+                if x != level.width then
+                    if level.map[y][x+1] == 0 then
+                        found = true
+                    end
+                end
+
+                if x != 1 then
+                    if level.map[y][x-1] == 0 then
+                        found = true
+                    end
+                end
+
+                -- if at least one direction is free
+                if found then
+                    level.map[y][x] = 66
+                    break
+                end
+            end
+        end -- for x
+        if found then
+            break
+        end
+    end -- for y
+
+    syringe.x = x
+    syringe.y = y
+
+end
+
+function syringe_update()
+    syringe.animation_counter += syringe.animation_speed
+    idx = 1+flr(syringe.animation_counter) % #syringe.animation
+    syringe.current_animation_frame = syringe.animation[idx] 
+end
+
+function game_init()
+    init_camera()
+    drawmode = 1
+end
+
+function level_update()
+   player.update()
+   sphere.update()
+   syringe.update()
+
+  if btnp(4) then
+--    if render_type == 0 then
+--        render_type = 1
+--    else
+--        render_type = 0
+--    end
+
+    -- cheat and go to next level
+    current_state = state_end_level
+
+  end
+ 
+  if btnp(5) then
+    if drawmode == 0 then
+        drawmode = 1
+    else
+        drawmode = 0
+    end
+  end
+
 end
 
 function level_draw()
@@ -422,7 +448,8 @@ function level_draw()
             x = 0
             for cell in all(row) do
                 if cell == 66 then
-                    spr(80,x+tile_width/2-4,y+tile_height/2-4)
+                    sprite = syringe.current_animation_frame
+                    spr(sprite,x+tile_width/2-4,y+tile_height/2-4)
                 elseif cell > 0 then
                     rectfill(x,y,x+tile_width-1,y+tile_height-1,cell)
                 end
@@ -662,6 +689,7 @@ function level_init_update()
 
     init_player()
     init_sphere()
+    init_syringe()
 
     current_state = state_play_level
 end
@@ -781,11 +809,11 @@ __gfx__
 000c00000010c00000c0100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 000c0000010055000c00550000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00055000055000000550000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0007000000070000000c0000000c0000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00070000000c0000000c0000000c0000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00ccc00000ccc00000ccc00000ccc000007770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00cc500000cc500000cc500000775000007750000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00ccc00000ccc0000077700000777000007770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00cc5000007750000077500000775000007750000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00070000000700000007000000070000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00777000007770000077700000777000007770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0007000000070000000c0000000c0000000c00000007000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00070000000c0000000c0000000c0000000700000007000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00ccc00000ccc00000ccc00000ccc000007770000077700000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00cc500000cc500000cc500000775000007750000077500000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00ccc00000ccc0000077700000777000007770000077700000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00cc5000007750000077500000775000007750000077500000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00070000000700000007000000070000000700000007000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00777000007770000077700000777000007770000077700000000000000000000000000000000000000000000000000000000000000000000000000000000000
