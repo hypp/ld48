@@ -669,10 +669,23 @@ function level_done_update()
         level_size += 1
     end
 end
+
+function print_shadow(msg,y,flash)
+    x = (screen_width-(#msg*4))/2
+    print(msg,x+1,y+1,13)
+    if flash then
+        print(msg,x,y,rnd(15)+1)
+    else
+        print(msg,x,y,15)
+    end
+end
+
 function level_done_draw()
     line(0,level.clear_pos,128,level.clear_pos,0)
-    print("LEVEL COMPLETED!",14+1,32+1,13)
-    print("LEVEL COMPLETED!",14,32,15)
+    msg = "LEVEL COMPLETED!"
+    print_shadow(msg,32,true)
+    msg = "MAZE SIZE "..level_size
+    print_shadow(msg,48,false)
 end
 
 
