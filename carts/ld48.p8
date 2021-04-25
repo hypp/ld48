@@ -101,14 +101,14 @@ function generate_level()
     generate_maze()
 
     -- clear map
+    if level.height % 2 == 0 then
+        level.height += 1
+    end
     map_height = level.height
-    if map_height % 2 == 0 then
-        map_height += 1
+    if level.width % 2 == 0 then
+        level.width += 1
     end
     map_width = level.width
-    if map_width % 2 == 0 then
-        map_width += 1
-    end
     level.map = {}
     for i=1,map_height do
         level.map[i] = {}
@@ -153,15 +153,45 @@ function generate_level()
 
     -- put the syringe
     found = false
-    while not found do
-        y = flr(rnd(level.height-2))+2
-        x = flr(rnd(level.width-2))+2
-        if level.map[y+1][x+1] != 0 then
-            found = true
-            level.map[y+1][x+1] = 66
-        end
-    end 
+    for y=level.height,1,-1 do
+        for x=level.width,1,-1 do
+            if level.map[y][x] != 0 then
+                -- check that it is visible from at least one direction
+                if y != level.height then
+                    if level.map[y+1][x] == 0 then
+                        found = true
+                    end
+                end
 
+                if y != 1 then
+                    if level.map[y-1][x] == 0 then
+                        found = true
+                    end
+                end
+
+                if x != level.width then
+                    if level.map[y][x+1] == 0 then
+                        found = true
+                    end
+                end
+
+                if x != 1 then
+                    if level.map[y][x-1] == 0 then
+                        found = true
+                    end
+                end
+
+                -- if at least one direction is free
+                if found then
+                    level.map[y][x] = 66
+                    break
+                end
+            end
+        end -- for x
+        if found then
+            break
+        end
+    end -- for y
 
 end
 
@@ -175,15 +205,60 @@ function init_player()
     player.direction_x = 0
     player.direction_y = 0
 
+    -- put the player
     found = false
-    while not found do
-        y = flr(rnd(level.height-1))+1
-        x = flr(rnd(level.width-1))+1
-        if level.map[y+1][x+1] == 0 then
-            found = true
-            player.x = x+0.5
-            player.y = y+0.5
+    for y=1,level.height do
+        for x=1,level.width do
+            if level.map[y][x] == 0 then
+                -- check that it is visible from at least one direction
+                if y != level.height then
+                    if level.map[y+1][x] == 0 then
+                        found = true
+                        player.direction_x = 0
+                        player.direction_y = 1
+                    end
+                end
+
+                if y != 1 then
+                    if level.map[y-1][x] == 0 then
+                        found = true
+                        player.direction_x = 0
+                        player.direction_y = -1
+                    end
+                end
+
+                if x != level.width then
+                    if level.map[y][x+1] == 0 then
+                        found = true
+                        player.direction_x = 1
+                        player.direction_y = 0
+                    end
+                end
+
+                if x != 1 then
+                    if level.map[y][x-1] == 0 then
+                        found = true
+                        player.direction_x = -1
+                        player.direction_y = 0
+                    end
+                end
+
+                if found then
+                    player.x = x+0.5
+                    player.y = y+0.5
+                    break
+                end
+            end
+        end -- for x
+        if found then
+            break
         end
+    end -- for y
+
+    printh("y="..player.y.."x="..player.x)
+
+
+    while not found do
     end 
 
 end
@@ -253,13 +328,13 @@ function level_update()
   new_y = player.y + player.direction_y * speed
   map_x = flr(new_x)
   map_y = flr(new_y)
-  if current_level_map[map_y+1][map_x+1] == 0 then
+  if current_level_map[map_y][map_x] == 0 then
   -- allow it
     player.x = new_x
     player.y = new_y
   else
   -- blocked by wall
-    if current_level_map[map_y+1][map_x+1] == 66 then
+    if current_level_map[map_y][map_x] == 66 then
         -- found the syringe!! new level
         current_state = state_end_level
     end
@@ -267,11 +342,15 @@ function level_update()
   end
 
   if btnp(4) then
-    if render_type == 0 then
-        render_type = 1
-    else
-        render_type = 0
-    end
+--    if render_type == 0 then
+--        render_type = 1
+--    else
+--        render_type = 0
+--    end
+
+    -- cheat and go to next level
+    current_state = state_end_level
+
   end
  
 
@@ -355,7 +434,7 @@ function level_draw()
             y += tile_height
         end
 
-        spr(0,player.x*tile_width-4,player.y*tile_height-4,7)
+        spr(0,(player.x-1)*tile_width-4,(player.y-1)*tile_height-4,7)
     end
 
     current_screen_address = screen_address
@@ -364,11 +443,10 @@ function level_draw()
         ray_direction_x = player.direction_x + camera.plane_x * camera_x
         ray_direction_y = player.direction_y + camera.plane_y * camera_x
 
-        x_dir = ray_direction_x*25
-        y_dir = ray_direction_y*25
-
 --        if drawmode == 1 then
---            line(player.x*tile_width,player.y*tile_height,player.x*tile_width+x_dir,player.y*tile_height+y_dir,7)
+--        x_dir = ray_direction_x*25
+--        y_dir = ray_direction_y*25
+--            line((player.x-1)*tile_width,(player.y-1)*tile_height,(player.x-1)*tile_width+x_dir,(player.y-1)*tile_height+y_dir,7)
 --        end
 
         map_x = flr(player.x)
@@ -414,8 +492,6 @@ function level_draw()
 
         -- make sure we have walls surrounding the map
         -- or this will never end
-        current_x = map_x
-        current_y = map_y
         side = 0
         hit = false
         while not hit do
@@ -429,13 +505,13 @@ function level_draw()
                 side = 1
             end
 
-            if current_level_map[1+map_y][1+map_x] > 0 then
+            if current_level_map[map_y][map_x] > 0 then
                 hit = 1
             end
         end
 
         if drawmode == 1 then
-            line(player.x*tile_width,player.y*tile_height,map_x*tile_width,map_y*tile_height,6)
+            line((player.x-1)*tile_width,(player.y-1)*tile_height,(map_x-1+0.5)*tile_width,(map_y-1+0.5)*tile_height,6)
         end
 
         if drawmode == 0 then
@@ -462,7 +538,7 @@ function level_draw()
                 stop_y = screen_height-1
             end
 
-            color = current_level_map[1+map_y][1+map_x]
+            color = current_level_map[map_y][map_x]
             if color == 66 then
             -- texture map
                 texture = color
@@ -570,7 +646,7 @@ function level_draw()
     if drawmode == 1 then
         x_dir = player.direction_x*15
         y_dir = player.direction_y*15
-        line(player.x*tile_width,player.y*tile_height,player.x*tile_width+x_dir,player.y*tile_height+y_dir,7)
+        line((player.x-1)*tile_width,(player.y-1)*tile_height,(player.x-1)*tile_width+x_dir,(player.y-1)*tile_height+y_dir,7)
     end
 
 end
