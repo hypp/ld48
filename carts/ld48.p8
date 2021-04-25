@@ -897,14 +897,19 @@ end
 
 function intro_draw()
     cls(0)
+
     for i=1,intro.current_point,2 do
         x1 = skull[i]
         y1 = skull[i+1]
         x2 = skull[i+2]
         y2 = skull[i+3]
+
+        line(screen_width/2,screen_height-1,x2,y2,rnd(3)+1)
+
         line(x1+1,y1,x2+1,y2,13)
         line(x1,y1+1,x2,y2+1,13)
         line(x1,y1,x2,y2,15)
+
     end
 
     if intro.current_point == #skull-2 then
@@ -921,7 +926,7 @@ function intro_draw()
         msg = intro.msgs[idx]
         y = intro.current_y
         x = (screen_width-#msg*4)/2
-        print(msg,x,y,3)
+        print(msg,x,y,7)
 
         intro.current_y += 1
         if intro.current_y > screen_height then
