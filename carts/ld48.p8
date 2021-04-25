@@ -14,8 +14,8 @@ screen_address = 0x6000
 drawmode = 0
 render_type = 1
 
-level_width = 9
-level_height = 9
+level_width = 8
+level_height = 8
 
 level1_map = {}
 
@@ -82,7 +82,7 @@ function generate_level()
     if map_height % 2 == 0 then
         map_height += 1
     end
-    map_width = level_width+1
+    map_width = level_width
     if map_width % 2 == 0 then
         map_width += 1
     end
@@ -136,7 +136,7 @@ function generate_level()
         if level1_map[y+1][x+1] != 0 then
             found = true
             level1_map[y+1][x+1] = 66
-,4        end
+        end
     end 
 
 
@@ -154,8 +154,8 @@ function init_player()
 
     found = false
     while not found do
-        y = flr(rnd(level_height))+1
-        x = flr(rnd(level_width))+1
+        y = flr(rnd(level_height-1))+1
+        x = flr(rnd(level_width-1))+1
         if level1_map[y+1][x+1] == 0 then
             found = true
             player.x = x+0.5
@@ -201,6 +201,8 @@ function game_init()
     init_camera()
     init_player()
     init_sphere()
+
+    drawmode = 1
 end
 
 function game_update()
