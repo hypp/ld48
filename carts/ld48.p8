@@ -40,6 +40,110 @@ palette = {
     {0,1, 2, 3, 4, 5, 5, 5,3,4, 9, 3,13, 1, 3, 4}
 }
 
+skull = {
+107,127,
+105,122,
+103,120,
+102,116,
+100,112,
+100,109,
+100,108,
+100,103,
+100,102,
+102,98,
+103,94,
+107,90,
+110,87,
+113,80,
+118,77,
+120,75,
+125,70,
+125,66,
+125,59,
+125,55,
+126,49,
+126,44,
+126,41,
+126,38,
+124,35,
+123,32,
+122,30,
+121,27,
+120,25,
+118,21,
+117,19,
+114,16,
+112,13,
+106,10,
+103,8,
+98,7,
+94,5,
+91,3,
+87,3,
+85,2,
+82,2,
+77,2,
+73,2,
+70,3,
+67,4,
+61,4,
+55,5,
+51,7,
+47,9,
+43,9,
+38,14,
+35,16,
+32,19,
+30,23,
+27,24,
+23,28,
+18,33,
+16,37,
+14,40,
+14,45,
+14,47,
+15,49,
+16,52,
+16,54,
+16,57,
+14,59,
+11,61,
+9,64,
+7,66,
+4,70,
+2,72,
+1,74,
+4,76,
+5,77,
+7,78,
+8,79,
+9,83,
+9,87,
+9,90,
+9,90,
+10,92,
+10,92,
+12,95,
+12,98,
+11,102,
+10,107,
+12,108,
+15,109,
+20,113,
+24,113,
+27,112,
+32,112,
+33,113,
+35,114,
+37,116,
+39,119,
+39,120,
+41,123,
+41,126
+}
+
+
+
 N=1
 S=2
 E=4
@@ -740,6 +844,32 @@ function level_done_draw()
     print_shadow(msg,48,false)
 end
 
+function intro_init_update()
+    music(-1)
+    intro = {}
+    intro.current_point = 0
+
+    current_state = state_play_intro
+end
+
+function intro_update()
+    if intro.current_point < #skull-2 then
+        intro.current_point += 1
+    end
+end
+
+function intro_draw()
+    cls(0)
+    for i=1,intro.current_point,2 do
+        x1 = skull[i]
+        y1 = skull[i+1]
+        x2 = skull[i+2]
+        y2 = skull[i+3]
+        line(x1,y1,x2,y2,15)
+    end
+
+end
+
 
 -- state machine
 
@@ -749,8 +879,9 @@ end
 
 function _update()
     if current_state == state_init_intro then
-        current_state = state_init_level
+        intro_init_update()
     elseif current_state == state_play_intro then
+        intro_update()
     elseif current_state == state_end_intro then
 
     elseif current_state == state_init_level then
@@ -769,6 +900,7 @@ end
 function _draw()
     if current_state == state_init_intro then
     elseif current_state == state_play_intro then
+        intro_draw()
     elseif current_state == state_end_intro then
 
     elseif current_state == state_init_level then
