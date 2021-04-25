@@ -11,13 +11,27 @@ texture_height = 32
 spritesheet_address = 0x0
 screen_address = 0x6000
 
+
+-- intro states
+state_init_intro=1
+state_play_intro=2
+state_end_intro=3
+-- level states
+state_init_level=4
+state_play_level=5
+state_end_level=6
+-- end
+state_init_game_over=7
+state_play_game_over=8
+state_end_game_over=9
+
+current_state=state_init_intro
+
 drawmode = 0
 render_type = 1
 
-level_width = 8
-level_height = 8
-
-level1_map = {}
+level_start_size=4
+level_size=level_start_size
 
 wall_colors = { 7,9,13,14,15 }
 
@@ -59,8 +73,8 @@ function carve_passages_from(current_x,current_y,grid)
 end
 
 function generate_maze()
-    height = flr((level_height)/2)
-    width = flr((level_width)/2)
+    height = flr((level.height)/2)
+    width = flr((level.width)/2)
 
     -- init maze
     maze = {}
@@ -78,17 +92,17 @@ function generate_level()
     generate_maze()
 
     -- clear map
-    map_height = level_height
+    map_height = level.height
     if map_height % 2 == 0 then
         map_height += 1
     end
-    map_width = level_width
+    map_width = level.width
     if map_width % 2 == 0 then
         map_width += 1
     end
-    level1_map = {}
+    level.map = {}
     for i=1,map_height do
-        level1_map[i] = {}
+        level.map[i] = {}
         for j=1,map_width do
             color = 3
             if i == 1 or j == 1 or i == map_height or j == map_width then
@@ -96,7 +110,7 @@ function generate_level()
             end
             -- random color but never 0
             color = rnd(wall_colors)
-            level1_map[i][j] = color
+            level.map[i][j] = color
         end
     end
 
@@ -109,18 +123,18 @@ function generate_level()
         map_x = 2
         for maze_x=0,#maze[0] do
             cell = maze[maze_y][maze_x]
-            level1_map[map_y][map_x] = 0
+            level.map[map_y][map_x] = 0
             if cell & N == N then
-                level1_map[map_y-1][map_x] = 0
+                level.map[map_y-1][map_x] = 0
             end
             if cell & S == S then
-                level1_map[map_y+1][map_x] = 0
+                level.map[map_y+1][map_x] = 0
             end
             if cell & W == W then
-                level1_map[map_y][map_x-1] = 0
+                level.map[map_y][map_x-1] = 0
             end
             if cell & E == E then
-                level1_map[map_y][map_x+1] = 0
+                level.map[map_y][map_x+1] = 0
             end
 
             map_x += 2
@@ -131,11 +145,11 @@ function generate_level()
     -- put the syringe
     found = false
     while not found do
-        y = flr(rnd(level_height-2))+2
-        x = flr(rnd(level_width-2))+2
-        if level1_map[y+1][x+1] != 0 then
+        y = flr(rnd(level.height-2))+2
+        x = flr(rnd(level.width-2))+2
+        if level.map[y+1][x+1] != 0 then
             found = true
-            level1_map[y+1][x+1] = 66
+            level.map[y+1][x+1] = 66
         end
     end 
 
@@ -154,9 +168,9 @@ function init_player()
 
     found = false
     while not found do
-        y = flr(rnd(level_height-1))+1
-        x = flr(rnd(level_width-1))+1
-        if level1_map[y+1][x+1] == 0 then
+        y = flr(rnd(level.height-1))+1
+        x = flr(rnd(level.width-1))+1
+        if level.map[y+1][x+1] == 0 then
             found = true
             player.x = x+0.5
             player.y = y+0.5
@@ -195,17 +209,11 @@ function init_sphere()
 end
 
 function game_init()
-    -- do this first
-    generate_level()
-
     init_camera()
-    init_player()
-    init_sphere()
-
     drawmode = 1
 end
 
-function game_update()
+function level_update()
   -- btn 0,1 left and right
   if btn(0) then
     player.angle -= 0.01
@@ -230,7 +238,7 @@ function game_update()
     speed -= 0.09
   end
 
-  current_level_map = level1_map
+  current_level_map = level.map
 
   new_x = player.x + player.direction_x * speed
   new_y = player.y + player.direction_y * speed
@@ -244,6 +252,7 @@ function game_update()
   -- blocked by wall
     if current_level_map[map_y+1][map_x+1] == 66 then
         -- found the syringe!! new level
+        current_state = state_end_level
     end
 
   end
@@ -286,24 +295,7 @@ function game_update()
 
 end
 
-
-
-function game_draw_test()
-    cls(0)
-
-    y = 0
-    for row in all(maze) do
-        x = 0
-        for cell in all(row) do
-            print(cell,x,y,15)
-            x += 8
-        end
-        y += 8
-    end
-
-end
-
-function game_draw()
+function level_draw()
 
     if drawmode == 1 then
         cls(0)
@@ -330,7 +322,7 @@ function game_draw()
         end
     end
 
-    current_level_map = level1_map
+    current_level_map = level.map
 
     if drawmode == 1 then
         -- draw map
@@ -574,6 +566,41 @@ function game_draw()
 
 end
 
+function level_init_update()
+    level = {}
+    level.width = level_size
+    level.height = level_size
+    level.map = {}
+    level.clear_pos = -1
+
+    -- do this first
+    generate_level()
+
+    init_player()
+    init_sphere()
+
+    current_state = state_play_level
+end
+function level_init_draw()
+end
+--function level_update()
+--end
+--function level_draw()
+--end
+function level_done_update()
+    level.clear_pos += 1
+    if level.clear_pos == screen_height then
+        current_state = state_init_level
+        level_size += 1
+    end
+end
+function level_done_draw()
+    line(0,level.clear_pos,128,level.clear_pos,0)
+    print("LEVEL COMPLETED!",10+1,32+1,13)
+    print("LEVEL COMPLETED!",10,32,15)
+end
+
+
 -- state machine
 
 function _init()
@@ -581,11 +608,39 @@ function _init()
 end
 
 function _update()
-    game_update()
+    if current_state == state_init_intro then
+        current_state = state_init_level
+    elseif current_state == state_play_intro then
+    elseif current_state == state_end_intro then
+
+    elseif current_state == state_init_level then
+        level_init_update()
+    elseif current_state == state_play_level then
+        level_update()
+    elseif current_state == state_end_level then
+        level_done_update()
+    elseif current_state == state_init_game_over then
+    elseif current_state == state_play_game_over then
+    elseif current_state == state_end_game_over then
+    end
+
 end
 
 function _draw()
-    game_draw()
+    if current_state == state_init_intro then
+    elseif current_state == state_play_intro then
+    elseif current_state == state_end_intro then
+
+    elseif current_state == state_init_level then
+        level_init_draw()
+    elseif current_state == state_play_level then
+        level_draw()
+    elseif current_state == state_end_level then
+        level_done_draw()
+    elseif current_state == state_init_game_over then
+    elseif current_state == state_play_game_over then
+    elseif current_state == state_end_game_over then
+    end
 end
 
 __gfx__
