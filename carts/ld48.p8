@@ -683,11 +683,11 @@ function level_draw()
                 end
                 wall_pos -= flr(wall_pos)
                 texture_x = wall_pos * texture_width
-                if side == 0 and ray_direction_x > 0 then
-                    texture_x = texture_width - texture_x - 1
+                if side == 0 and ray_direction_x < 0 then
+                    texture_x = texture_width - texture_x  -- - 1
                 end
-                if side == 1 and ray_direction_y < 0 then
-                    texture_x = texture_width - texture_x - 1
+                if side == 1 and ray_direction_y > 0 then
+                    texture_x = texture_width - texture_x  -- - 1
                 end
 
                 -- select texture
