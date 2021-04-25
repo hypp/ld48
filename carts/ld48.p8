@@ -157,9 +157,9 @@ end
 function player_update()
   -- btn 0,1 left and right
   if btn(0) then
-    player.angle -= 0.01
-  elseif btn(1) then
     player.angle += 0.01
+  elseif btn(1) then
+    player.angle -= 0.01
   end
 
 -- calculate player direction
@@ -167,8 +167,8 @@ function player_update()
   player.direction_y = sin(player.angle)*1
 
 -- camera plane is perpendicular to player direction
-  camera.plane_x = cos(player.angle+1.0/4)*0.66
-  camera.plane_y = sin(player.angle+1.0/4)*0.66
+  camera.plane_x = cos(player.angle+3/4)*0.66
+  camera.plane_y = sin(player.angle+3/4)*0.66
 
   speed = 0
   if btn(2) then
