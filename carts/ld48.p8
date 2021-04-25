@@ -214,32 +214,28 @@ function init_player()
                 if y != level.height then
                     if level.map[y+1][x] == 0 then
                         found = true
-                        player.direction_x = 0
-                        player.direction_y = 1
+                        player.angle = 1/4
                     end
                 end
 
                 if y != 1 then
                     if level.map[y-1][x] == 0 then
                         found = true
-                        player.direction_x = 0
-                        player.direction_y = -1
+                        player.angle = 3/4
                     end
                 end
 
                 if x != level.width then
                     if level.map[y][x+1] == 0 then
                         found = true
-                        player.direction_x = 1
-                        player.direction_y = 0
+                        player.angle = 0
                     end
                 end
 
                 if x != 1 then
                     if level.map[y][x-1] == 0 then
                         found = true
-                        player.direction_x = -1
-                        player.direction_y = 0
+                        player.angle = 2/4
                     end
                 end
 
