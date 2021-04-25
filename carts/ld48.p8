@@ -867,6 +867,14 @@ function intro_init_update()
         "show map with ❎",
         "fire with 🅾️",
         "press ❎ to start",
+        "",
+        "By the way",
+        "No real 3d here!",
+        "This is a Wolfenstein 3d style",
+        "raycaster",
+        "combined with a recursive",
+        "backtracking maze generator",
+        ""
     }
 
     current_state = state_play_intro
@@ -880,6 +888,11 @@ function intro_update()
             intro.msg_counter -= #intro.msgs
         end
     end
+
+  if btnp(5) then
+    current_state = state_end_intro
+  end
+
 end
 
 function intro_draw()
@@ -915,11 +928,7 @@ function intro_draw()
             intro.current_y = intro.start_y
             intro.msg_counter += 1
         end
-
     end
-
-
-
 end
 
 
@@ -935,6 +944,7 @@ function _update()
     elseif current_state == state_play_intro then
         intro_update()
     elseif current_state == state_end_intro then
+        current_state = state_init_level
 
     elseif current_state == state_init_level then
         level_init_update()
