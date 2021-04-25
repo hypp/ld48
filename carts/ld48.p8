@@ -49,7 +49,6 @@ DY         = { [E] = 0, [W] =  0, [N] = -1, [S] = 1 }
 OPPOSITE   = { [E] = W, [W] =  E, [N] =  S, [S] = N }
 
 function carve_passages_from(current_x,current_y,grid) 
--- TODO randomize
     height = #grid
     width = #grid[0]
 
@@ -82,6 +81,16 @@ function generate_maze()
         maze[y] = {}
         for x=0,width-1 do
             maze[y][x] = 0
+        end
+    end
+
+    if level_size > 8 then
+        -- add random rooms
+        rooms = 1 + (level_size-8) >> 2
+        for i=0,rooms do
+            x = flr(rnd(width-2))+1
+            y = flr(rnd(height-2))+1
+            maze[y][x] = N | S | E | W
         end
     end
 
@@ -596,8 +605,8 @@ function level_done_update()
 end
 function level_done_draw()
     line(0,level.clear_pos,128,level.clear_pos,0)
-    print("LEVEL COMPLETED!",10+1,32+1,13)
-    print("LEVEL COMPLETED!",10,32,15)
+    print("LEVEL COMPLETED!",14+1,32+1,13)
+    print("LEVEL COMPLETED!",14,32,15)
 end
 
 
